@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" /><title>Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://use.fontawesome.com/a2258313a1.js"></script>
+<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+<body>
+    <script type="text/javascript"> document.addEventListener('click', function(e) { if(document.activeElement.toString() == '[object HTMLButtonElement]'){ document.activeElement.blur(); } }); </script>
+    <div class="btns">
+        <h2>Breakout</h2>
+        <button data-modal-target="#modal" id="instructions" class="button" type="button" style="position: absolute; left: 20px; top: 30px;">Instructions</button>
+        <% if (typeof user == 'undefined' || user=='') { %>
+        <button data-modal-target="#login-modal" id="user" class="button logIn" type="button">Log In / Sign Up</button>
+        <% } else { %>
+        <div id="profile" class = "profile">Username: <%= user.username %></div>
+        <a href="/logout" class="button logOut" >Logout</a>
+        <% } %>
+    </div>
+    <div class="high-score"></div>
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <div class="title">How to Play</div>
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            Use the left and right arrow keys to move the paddle and hit as many bricks as possible to beat your high score. Signup/Login to save your score! 
+        </div>
+    </div>
+
+
+    <div class="reset">Reset High Score</div>
+    
+    <div class="<%= error != '' ||  success_msg != '' || (typeof login != 'undefined' && login == true) ? 'modal active user' : 'modal user' %>" id="login-modal" style="width: 300px">
+        <div class="modal-header">
+            <div class="title">Log In</div>
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body" id="login-modal-body">
+            <%- include('./partials/messages'); %>
+            <form method="POST" action="/login" id="login-form">
+                <label>
+                    Username
+                    <input type="text" class="username" name="username">
+                </label>
+                <label>
+                    Password
+                    <input type="password" id="lpassword" name="lpassword">
+                </label>
+                <br>
+                <div style="text-align:center">
+                    <input type="submit" value="LOG IN" style="text-align:center">
+                </div>
+            </form> 
+        </div>
+        <div class="modal-footer">
+            <button data-modal-target="#signup-modal" type="button" class="Cbutton">Create New Account</button> 
+        </div>
+    </div>
+    <div class="<%= typeof signup != 'undefined' && signup == true ? 'modal active user' : 'modal user' %>"  id="signup-modal" style="width: 300px">
+        <div class="modal-header">
+            <div class="title">Sign Up</div>
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body" id="signup-modal-body">
+            <%- include('./partials/messages'); %>
+            <form method="POST" action="/register" id="signup-form">
+                <label>
+                    Username
+                    <input type="text" class="username" name="username">
+                </label>
+                <label>
+                    Password
+                    <input type="password" id="spassword1" name="spassword1">
+                </label>
+                <label>
+                    Confirm Password
+                    <input type="password" id="spassword2" name="spassword2">
+                </label>
+                <div style="text-align:center">
+                    <input type="submit" value="SIGN UP" style="text-align:center">
+                </div>
+            </form> 
+        </div>
+    </div>
+
+    <div class="<%= error != '' || success_msg != '' || typeof signup != 'undefined' && signup == true || typeof login != 'undefined' && login == true ? 'active' : '' %>" id="overlay"></div>
+
+    <br>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <div class='user-high'>
+        <p id=maxScore>User High Score: <%= typeof user != 'undefined' && user != '' ? user.score : 0 %></p>
+    </div>
+    <div class='attempt-high'>
+        <p id='Attempts' class='Attempts'>User Attempts: <%= typeof user != 'undefined' && user != '' ? user.attempts : 0 %></p>
+    </div>
+    <div id="myModal" class="modalOver">
+        <div class="modal-content">
+          <p>Game Over, press Space to Play again</p>
+        </div>
+      
+      </div>
+    <script src="./index.js"></script>
+</html>
